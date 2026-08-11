@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>IMAGE PLAYGROUND</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <button id="homeBtn" class="header-item">IMAGE PLAYGROUND</button>
+
+    <div class="top-actions">
+      <button id="introBtn" class="header-item">INTRODUCE</button>
+      <button id="themeBtn" class="header-item">NIGHT</button>
+    </div>
+  </header>
+
+  <main class="workspace">
+    <section class="stage">
+      <div id="canvasWrap"></div>
+
+      <div id="introPanel" class="intro-panel">
+        <div class="intro-copy">
+          <!-- INTRODUCE CONTENT: write your own text here -->
+        </div>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="section-index">
+        <button class="section-tab active" data-panel="pixelize">PIXELIZE YOUR IMAGE</button>
+        <button class="section-tab" data-panel="move">MOVE YOUR IMAGE</button>
+      </div>
+
+      <div id="pixelizePanel" class="panel active">
+        <div class="control-group">
+          <div class="control-label">IMAGE</div>
+          <label class="ui-button upload-button">
+            UPLOAD IMAGE
+            <input id="imageInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif">
+          </label>
+        </div>
+
+        <div class="control-group">
+          <div class="label-row">
+            <label for="pixelCount">PIXEL COUNT</label>
+            <output id="pixelCountValue">130</output>
+          </div>
+          <input id="pixelCount" type="range" min="30" max="220" step="1" value="130">
+        </div>
+
+        <div class="control-group">
+          <div class="label-row">
+            <label for="minDot">MIN DOT</label>
+            <output id="minDotValue">9</output>
+          </div>
+          <input id="minDot" type="range" min="1" max="30" step="1" value="9">
+        </div>
+
+        <div class="control-group">
+          <div class="label-row">
+            <label for="maxDot">MAX DOT</label>
+            <output id="maxDotValue">9</output>
+          </div>
+          <input id="maxDot" type="range" min="1" max="40" step="1" value="9">
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">SHAPE</div>
+          <div class="shape-buttons">
+            <button id="circleBtn" class="shape-button selected" aria-label="Circle" title="Circle">○</button>
+            <button id="heartBtn" class="shape-button" aria-label="Heart" title="Heart">♥</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="control-label">COLOR</div>
+          <button id="randomColor" class="ui-button">RANDOMIZE COLOR</button>
+        </div>
+
+        <div class="control-group export-group">
+          <div class="control-label">EXPORT</div>
+          <button id="saveImage" class="ui-button dark-button">SAVE IMAGE</button>
+        </div>
+      </div>
+
+      <div id="movePanel" class="panel">
+        <div class="control-group">
+          <div class="control-label">DIRECTION</div>
+          <div class="two-buttons">
+            <button id="leftBtn" class="ui-button selected">← LEFT</button>
+            <button id="rightBtn" class="ui-button">RIGHT →</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="label-row">
+            <label for="gridStep">GRID STEP</label>
+            <output id="gridStepValue">1</output>
+          </div>
+          <input id="gridStep" type="range" min="1" max="6" step="1" value="1">
+        </div>
+
+        <div class="control-group">
+          <div class="label-row">
+            <label for="moveSpeed">MOVE SPEED</label>
+            <output id="moveSpeedValue">0.10</output>
+          </div>
+          <input id="moveSpeed" type="range" min="0.01" max="0.50" step="0.01" value="0.10">
+        </div>
+
+        <div class="control-group">
+          <div class="label-row">
+            <label for="variation">SPEED VARIATION</label>
+            <output id="variationValue">0.04</output>
+          </div>
+          <input id="variation" type="range" min="0" max="0.12" step="0.01" value="0.04">
+        </div>
+
+        <div class="control-group export-group">
+          <div class="control-label">EXPORT</div>
+          <div class="export-buttons">
+            <button id="saveImageMove" class="ui-button">SAVE IMAGE</button>
+            <button id="saveGif" class="ui-button dark-button">SAVE GIF</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="sketch.js"></script>
+</body>
+</html>
