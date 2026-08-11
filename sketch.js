@@ -9,7 +9,8 @@ const SIZE_POWER = 1.5;
 
 let shapeMode = "circle";
 
-let gridStep = 1;
+const GRID_STEP = 1;
+
 let moveSpeed = 0.10;
 let moveVariation = 0.04;
 let direction = -1;
@@ -21,6 +22,7 @@ let dots = [];
 let mode = "pixelize";
 
 let pInst = null;
+let isSavingGif = false;
 
 const q = id => document.getElementById(id);
 
@@ -28,12 +30,7 @@ function randomizePalette() {
   if (!pInst) return;
 
   baseHue = pInst.random(360);
-
-  accentHue =
-    (
-      baseHue +
-      pInst.random(145, 215)
-    ) % 360;
+  accentHue = (baseHue + pInst.random(145, 215)) % 360;
 }
 
 function handleUpload(file) {
@@ -77,13 +74,12 @@ function resizeCanvasToImage() {
       320,
       Math.min(
         1100,
-        window.innerWidth - 320
+        window.innerWidth - 330
       )
     );
 
   const aspect =
-    sourceImg.height /
-    sourceImg.width;
+    sourceImg.height / sourceImg.width;
 
   pInst.resizeCanvas(
     stageWidth,
@@ -102,8 +98,7 @@ function rebuildDots() {
   dots = [];
 
   const aspect =
-    sourceImg.height /
-    sourceImg.width;
+    sourceImg.height / sourceImg.width;
 
   const rows =
     Math.max(
@@ -114,12 +109,10 @@ function rebuildDots() {
     );
 
   const cellW =
-    pInst.width /
-    cols;
+    pInst.width / cols;
 
   const cellH =
-    pInst.height /
-    rows;
+    pInst.height / rows;
 
   sourceImg.loadPixels();
 
@@ -252,7 +245,7 @@ function rebuildDots() {
 
         offset:
           pInst.random(
-            -cellW * gridStep,
+            -cellW * GRID_STEP,
             0
           )
       });
@@ -280,12 +273,12 @@ function drawHeart(p, x, y, size) {
   p.push();
   p.translate(x, y);
 
-  const scale =
+  const heartScale =
     size / 34;
 
   p.scale(
-    scale,
-    scale
+    heartScale,
+    heartScale
   );
 
   p.beginShape();
@@ -362,7 +355,9 @@ function drawDot(p, d, x, y) {
     l
   );
 
-  if (shapeMode === "heart") {
+  if (
+    shapeMode === "heart"
+  ) {
     drawHeart(
       p,
       x,
@@ -422,15 +417,15 @@ new p5(p => {
     if (!sourceImg) return;
 
     dots.forEach(d => {
-
       let x =
         d.x;
 
-      if (mode === "move") {
-
+      if (
+        mode === "move"
+      ) {
         const moveDistance =
           d.cellW *
-          gridStep;
+          GRID_STEP;
 
         d.offset +=
           d.speed *
@@ -559,30 +554,36 @@ q("maxDot").addEventListener(
 q("circleBtn").addEventListener(
   "click",
   () => {
-    shapeMode = "circle";
+    shapeMode =
+      "circle";
 
-    q("circleBtn").classList.add(
-      "selected"
-    );
+    q("circleBtn")
+      .classList.add(
+        "selected"
+      );
 
-    q("heartBtn").classList.remove(
-      "selected"
-    );
+    q("heartBtn")
+      .classList.remove(
+        "selected"
+      );
   }
 );
 
 q("heartBtn").addEventListener(
   "click",
   () => {
-    shapeMode = "heart";
+    shapeMode =
+      "heart";
 
-    q("heartBtn").classList.add(
-      "selected"
-    );
+    q("heartBtn")
+      .classList.add(
+        "selected"
+      );
 
-    q("circleBtn").classList.remove(
-      "selected"
-    );
+    q("circleBtn")
+      .classList.remove(
+        "selected"
+      );
   }
 );
 
@@ -601,19 +602,6 @@ q("randomColor").addEventListener(
 
 
 // MOVE
-q("gridStep").addEventListener(
-  "input",
-  e => {
-    gridStep =
-      Number(
-        e.target.value
-      );
-
-    q("gridStepValue").textContent =
-      gridStep;
-  }
-);
-
 q("moveSpeed").addEventListener(
   "input",
   e => {
@@ -649,13 +637,15 @@ q("leftBtn").addEventListener(
   () => {
     direction = -1;
 
-    q("leftBtn").classList.add(
-      "selected"
-    );
+    q("leftBtn")
+      .classList.add(
+        "selected"
+      );
 
-    q("rightBtn").classList.remove(
-      "selected"
-    );
+    q("rightBtn")
+      .classList.remove(
+        "selected"
+      );
   }
 );
 
@@ -664,13 +654,15 @@ q("rightBtn").addEventListener(
   () => {
     direction = 1;
 
-    q("rightBtn").classList.add(
-      "selected"
-    );
+    q("rightBtn")
+      .classList.add(
+        "selected"
+      );
 
-    q("leftBtn").classList.remove(
-      "selected"
-    );
+    q("leftBtn")
+      .classList.remove(
+        "selected"
+      );
   }
 );
 
@@ -764,45 +756,126 @@ q("themeBtn").addEventListener(
 
 
 // SAVE PNG
-function saveCurrentImage(suffix) {
-  if (!sourceImg || !pInst) return;
-
-  pInst.saveCanvas(
-    sourceName + suffix,
-    "png"
-  );
-}
-
 q("saveImage").addEventListener(
   "click",
   () => {
-    saveCurrentImage(
-      "-pixelized"
+    if (
+      !sourceImg ||
+      !pInst
+    ) {
+      return;
+    }
+
+    pInst.saveCanvas(
+      sourceName +
+      "-pixelized",
+      "png"
     );
   }
 );
 
-q("saveImageMove").addEventListener(
-  "click",
-  () => {
-    saveCurrentImage(
-      "-moving"
+
+// GIF OVERLAY
+function showGifLoading() {
+  q("gifMessage").textContent =
+    "WAIT A SECOND...";
+
+  q("gifLoader")
+    .classList.remove(
+      "done"
     );
-  }
-);
+
+  q("gifOverlay")
+    .classList.add(
+      "show"
+    );
+}
+
+function showGifDone() {
+  q("gifMessage").textContent =
+    "DONE!";
+
+  q("gifLoader")
+    .classList.add(
+      "done"
+    );
+
+  setTimeout(
+    () => {
+      q("gifOverlay")
+        .classList.remove(
+          "show"
+        );
+
+      q("gifLoader")
+        .classList.remove(
+          "done"
+        );
+    },
+    900
+  );
+}
 
 
 // SAVE GIF
 q("saveGif").addEventListener(
   "click",
-  () => {
-    if (!sourceImg || !pInst) return;
+  async () => {
+    if (
+      !sourceImg ||
+      !pInst ||
+      isSavingGif
+    ) {
+      return;
+    }
 
+    isSavingGif = true;
     mode = "move";
 
-    pInst.saveGif(
-      sourceName + "-moving",
-      3
-    );
+    showGifLoading();
+
+    try {
+      await pInst.saveGif(
+        sourceName +
+        "-moving",
+        3,
+        {
+          silent: true
+        }
+      );
+
+      showGifDone();
+    }
+
+    catch (error) {
+      console.error(error);
+
+      q("gifMessage").textContent =
+        "ERROR";
+
+      q("gifLoader")
+        .classList.add(
+          "done"
+        );
+
+      setTimeout(
+        () => {
+          q("gifOverlay")
+            .classList.remove(
+              "show"
+            );
+
+          q("gifLoader")
+            .classList.remove(
+              "done"
+            );
+        },
+        1200
+      );
+    }
+
+    finally {
+      isSavingGif = false;
+    }
   }
 );

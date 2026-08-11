@@ -5,9 +5,14 @@
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>IMAGE PLAYGROUND</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/p5@2.3.1/lib/p5.min.js"></script>
 </head>
 <body>
+  <div class="mobile-notice">
+    I'M SORRY T.T<br>
+    BEST VIEWED ON DESKTOP.
+  </div>
+
   <header class="topbar">
     <button id="homeBtn" class="header-item">IMAGE PLAYGROUND</button>
 
@@ -23,19 +28,24 @@
 
       <div id="introPanel" class="intro-panel">
         <div class="intro-copy">
-            <p>
-    이미지를 잘게 쪼개어서 놀아봅시다!<br>
-    값을 바꾸어 패턴을 만들고, 움직여보세요.
-  </p>
+          <p>
+            이미지를 잘게 쪼개어서 놀아봅시다!<br>
+            값을 바꾸어 패턴을 만들고, 움직여보세요.
+          </p>
 
-  <p>
-    Kyeongmin Yi
-  </p>
+          <p>Kyeongmin Yi</p>
 
-  <p>
-    Ig. @yikynmin<br>
-    Mail. yikyeongmin@gmail.com
-  </p>
+          <p>
+            Ig. @yikynmin<br>
+            Mail. yikyeongmin@gmail.com
+          </p>
+        </div>
+      </div>
+
+      <div id="gifOverlay" class="gif-overlay" aria-live="polite">
+        <div class="gif-status">
+          <div id="gifMessage" class="gif-message">WAIT A SECOND...</div>
+          <div id="gifLoader" class="gif-loader" aria-hidden="true"></div>
         </div>
       </div>
     </section>
@@ -82,7 +92,7 @@
         <div class="control-group">
           <div class="control-label">SHAPE</div>
           <div class="shape-buttons">
-            <button id="circleBtn" class="shape-button selected" aria-label="Circle" title="Circle">○</button>
+            <button id="circleBtn" class="shape-button selected" aria-label="Circle" title="Circle">●</button>
             <button id="heartBtn" class="shape-button" aria-label="Heart" title="Heart">♥</button>
           </div>
         </div>
@@ -109,14 +119,6 @@
 
         <div class="control-group">
           <div class="label-row">
-            <label for="gridStep">GRID STEP</label>
-            <output id="gridStepValue">1</output>
-          </div>
-          <input id="gridStep" type="range" min="1" max="6" step="1" value="1">
-        </div>
-
-        <div class="control-group">
-          <div class="label-row">
             <label for="moveSpeed">MOVE SPEED</label>
             <output id="moveSpeedValue">0.10</output>
           </div>
@@ -133,12 +135,11 @@
 
         <div class="control-group export-group">
           <div class="control-label">EXPORT</div>
-          <div class="export-buttons">
-            <button id="saveImageMove" class="ui-button">SAVE IMAGE</button>
-            <button id="saveGif" class="ui-button dark-button">SAVE GIF</button>
-          </div>
+          <button id="saveGif" class="ui-button dark-button">SAVE GIF</button>
         </div>
       </div>
+
+      <footer class="copyright">© 2026 Kyeongmin Yi</footer>
     </aside>
   </main>
 
