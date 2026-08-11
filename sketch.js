@@ -69,24 +69,67 @@ function handleUpload(file) {
 function resizeCanvasToImage() {
   if (!sourceImg || !pInst) return;
 
-  const stageWidth =
+  const stage =
+    document.querySelector(".stage");
+
+  const sidebarWidth =
+    270;
+
+  const horizontalPadding =
+    48;
+
+  const verticalPadding =
+    48;
+
+  const availableWidth =
     Math.max(
-      320,
-      Math.min(
-        1100,
-        window.innerWidth - 330
-      )
+      240,
+      stage.clientWidth -
+      horizontalPadding
     );
 
-  const aspect =
-    sourceImg.height / sourceImg.width;
+  const availableHeight =
+    Math.max(
+      180,
+      window.innerHeight -
+      56 -
+      verticalPadding
+    );
+
+  const imageAspect =
+    sourceImg.width /
+    sourceImg.height;
+
+  let canvasWidth =
+    availableWidth;
+
+  let canvasHeight =
+    canvasWidth /
+    imageAspect;
+
+  if (
+    canvasHeight >
+    availableHeight
+  ) {
+    canvasHeight =
+      availableHeight;
+
+    canvasWidth =
+      canvasHeight *
+      imageAspect;
+  }
 
   pInst.resizeCanvas(
-    stageWidth,
     Math.max(
       1,
       Math.round(
-        stageWidth * aspect
+        canvasWidth
+      )
+    ),
+    Math.max(
+      1,
+      Math.round(
+        canvasHeight
       )
     )
   );

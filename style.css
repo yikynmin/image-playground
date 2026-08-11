@@ -340,3 +340,20 @@ body.night .gif-overlay{
     font-weight:700;
   }
 }
+
+
+/* Keep the full canvas visible inside the workspace */
+@media (min-width:821px){
+  .stage{
+    overflow:hidden;
+  }
+
+  #canvasWrap{
+    height:100%;
+  }
+
+  #canvasWrap canvas{
+    max-width:100%;
+    max-height:calc(100vh - 104px);
+  }
+}
